@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order — Sawah Senja Coffee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f2ea; --card:#fff; --text:#1f1f1f; --muted:#6b6b6b;
+      --brand:#8b5e3c; --brand2:#2f6f5e;
+      --shadow:0 14px 40px rgba(0,0,0,.08); --radius:18px; --line:rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1120px;margin:0 auto;padding:0 18px}
+    .muted{color:var(--muted)}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 18px;border-radius:999px;background:var(--brand);color:#fff;font-weight:900;
+      transition:.25s;box-shadow:0 10px 24px rgba(139,94,60,.22);border:0;cursor:pointer;
+    }
+    .btn.secondary{background:#fff;color:var(--text);border:1px solid rgba(0,0,0,.10);box-shadow:0 10px 24px rgba(0,0,0,.10)}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid rgba(0,0,0,.14);box-shadow:none}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(246,242,234,.82);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+    .nav .row{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900}
+    .logo{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 12px 26px rgba(0,0,0,.12)}
+    section{padding:24px 0 54px}
+    .titleRow{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:18px 0}
+    .titleRow h1{font-size:28px;letter-spacing:-.2px}
+    .grid{display:grid;gap:14px}
+    .grid2{grid-template-columns:1.2fr .8fr}
+
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line);padding:16px}
+    .menuGrid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+    .menuCard{
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow:0 10px 24px rgba(0,0,0,.06);
+      cursor:pointer;
+      transition:.18s;
+    }
+    .menuCard:hover{transform:translateY(-2px)}
+    .menuImg{height:140px;background:#ddd;background-size:cover;background-position:center}
+    .menuBody{padding:12px}
+    .menuTop{display:flex;justify-content:space-between;gap:10px}
+    .menuName{font-weight:900;font-size:14px}
+    .menuTag{font-size:12px;color:var(--muted);font-weight:800;margin-top:2px}
+    .price{font-weight:900}
+
+    .cartRow{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:12px;border-radius:14px;background:rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.05);
+    }
+    .qty{display:flex;align-items:center;gap:10px}
+    .qbtn{width:32px;height:32px;border-radius:10px;border:1px solid rgba(0,0,0,.12);background:#fff;cursor:pointer;font-weight:900}
+    .qnum{min-width:22px;text-align:center;font-weight:900}
+    .subtotal{font-weight:900}
+    .lineRow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px dashed rgba(0,0,0,.12);margin-top:10px}
+    .field{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(0,0,0,.15);background:#fff;font-family:inherit}
+    .optRow{display:flex;gap:10px;flex-wrap:wrap}
+    .opt{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid rgba(0,0,0,.10);background:#fff;cursor:pointer;user-select:none;font-weight:900;font-size:13px}
+    .opt input{accent-color: var(--brand)}
+    .hint{font-size:12px;color:var(--muted);margin-top:8px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      background:rgba(47,111,94,.10);
+      border:1px solid rgba(47,111,94,.14);
+      font-weight:900;font-size:13px;
+    }
+
+    @media (max-width: 980px){
+      .grid2{grid-template-columns:1fr}
+      .menuGrid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="container">
+      <div class="row">
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <div>Order</div>
+            <div class="muted" style="font-size:12px;font-weight:900;">Sawah Senja Coffee</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn ghost" href="index.html">← Kembali</a>
+          <a class="btn secondary" href="https://wa.me/6283894403505" target="_blank" rel="noopener">Chat WA</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="titleRow">
+        <div>
+          <h1>Menu Bergambar & Pesanan</h1>
+          <div class="muted">Klik menu untuk menambahkan ke keranjang.</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="pill">🎓 Student Day 20%</span>
+          <span class="pill">🎉 B1G1 Minuman</span>
+        </div>
+      </div>
+
+      <div class="grid grid2">
+        <!-- MENU -->
+        <div class="card">
+          <h3 style="margin-bottom:10px;">Daftar Menu</h3>
+          <div class="menuGrid" id="menuGrid"></div>
+
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+            <span class="pill">Klik kartu menu untuk tambah</span>
+            <span class="pill">Qty bisa diubah di keranjang</span>
+          </div>
+        </div>
+
+        <!-- CART -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+            <h3>Keranjang</h3>
+            <button class="btn ghost" id="btnClear" disabled>Hapus Semua</button>
+          </div>
+
+          <div id="cartEmpty" class="muted" style="padding:14px;border-radius:14px;background:rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.05);margin-top:10px;">
+            Belum ada pesanan. Klik menu untuk menambahkan.
+          </div>
+
+          <div id="cartList" class="grid" style="display:none;margin-top:10px;gap:10px;"></div>
+
+          <div class="lineRow">
+            <div>
+              <div class="muted" style="font-size:12px;font-weight:900;">SUBTOTAL</div>
+              <div style="font-size:18px;font-weight:900;" id="subTotal">Rp 0</div>
+            </div>
+            <div style="text-align:right">
+              <div class="muted" style="font-size:12px;font-weight:900;">DISKON</div>
+              <div style="font-size:18px;font-weight:900;" id="discount">Rp 0</div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;">
+            <div>
+              <div class="muted" style="font-size:12px;font-weight:900;">TOTAL</div>
+              <div style="font-size:24px;font-weight:900;" id="grandTotal">Rp 0</div>
+            </div>
+            <button class="btn" id="btnOrder" disabled>Buat Pesanan</button>
+          </div>
+
+          <div style="margin-top:14px;">
+            <div class="optRow">
+              <label class="opt"><input type="radio" name="otype" value="Dine-in" checked> Dine-in</label>
+              <label class="opt"><input type="radio" name="otype" value="Take away"> Take away</label>
+            </div>
+
+            <div class="optRow" style="margin-top:10px;">
+              <label class="opt"><input type="checkbox" id="promoStudent"> Student Day (Diskon 20%)</label>
+              <label class="opt"><input type="checkbox" id="promoB1G1"> Tanggal Cantik (B1G1 Minuman)</label>
+            </div>
+
+            <div style="margin-top:12px;display:grid;gap:10px;">
+              <input id="custName" class="field" type="text" placeholder="Nama (opsional)">
+              <textarea id="custNote" class="field" placeholder="Catatan (opsional) - contoh: less sugar, no ice" style="min-height:88px;"></textarea>
+              <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;">
+                <input id="pickupDate" class="field" type="date" />
+                <input id="pickupTime" class="field" type="time" />
+              </div>
+            </div>
+
+            <div class="hint">
+              * Promo B1G1 hanya untuk <b>minuman</b>: gratis 1 minuman termurah jika total minuman ≥ 2.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ====== DATA MENU (tinggal ganti gambar + nama + harga) ======
+    // Tips: kalau punya foto sendiri, taruh di folder /assets lalu isi src: "assets/namafile.jpg"
+    const MENU = [
+      // DRINKS
+      {cat:"drink", name:"Espresso", price:20000, tag:"Coffee Based", img:"https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Americano", price:22000, tag:"Coffee Based", img:"https://images.unsplash.com/photo-1521302080334-4bebac2763a6?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Cappuccino", price:28000, tag:"Coffee Based", img:"https://images.unsplash.com/photo-1512568400610-62da28bc8a13?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Cafe Latte", price:30000, tag:"Coffee Based", img:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Caramel Latte", price:33000, tag:"Coffee Based", img:"https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Aren Latte (Best Seller)", price:32000, tag:"Coffee Based", img:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80"},
+
+      {cat:"drink", name:"Matcha Latte", price:30000, tag:"Non Coffee", img:"https://images.unsplash.com/photo-1548625149-720134e8f932?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Chocolate Signature", price:28000, tag:"Non Coffee", img:"https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Red Velvet Latte", price:30000, tag:"Non Coffee", img:"https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"drink", name:"Thai Tea", price:25000, tag:"Non Coffee", img:"https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1200&q=80"},
+
+      // FOODS
+      {cat:"food", name:"Nasi Goreng Sawah Senja", price:35000, tag:"Makanan", img:"https://images.unsplash.com/photo-1604908176997-125f25cc500f?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"food", name:"Chicken Katsu Rice Bowl", price:32000, tag:"Makanan", img:"https://images.unsplash.com/photo-1604909053191-6b6bcb7a4e0a?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"food", name:"Spaghetti Aglio Olio", price:34000, tag:"Makanan", img:"https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"food", name:"French Fries", price:22000, tag:"Makanan", img:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=1200&q=80"},
+      {cat:"food", name:"Mix Platter", price:45000, tag:"Makanan", img:"https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=80"},
+    ];
+
+    const WA_NUMBER = "6283894403505";
+
+    const menuGrid = document.getElementById('menuGrid');
+    const cartList = document.getElementById('cartList');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const subTotalEl = document.getElementById('subTotal');
+    const discountEl = document.getElementById('discount');
+    const grandTotalEl = document.getElementById('grandTotal');
+    const btnOrder = document.getElementById('btnOrder');
+    const btnClear = document.getElementById('btnClear');
+    const promoStudent = document.getElementById('promoStudent');
+    const promoB1G1 = document.getElementById('promoB1G1');
+    const custName = document.getElementById('custName');
+    const custNote = document.getElementById('custNote');
+    const pickupDate = document.getElementById('pickupDate');
+    const pickupTime = document.getElementById('pickupTime');
+
+    const cart = {}; // key -> {name, price, qty, cat}
+
+    function rupiah(n){
+      return "Rp " + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+    function keyFrom(item){
+      return item.name + "___" + item.price + "___" + item.cat;
+    }
+
+    function renderMenu(){
+      menuGrid.innerHTML = '';
+      MENU.forEach(item=>{
+        const card = document.createElement('div');
+        card.className = 'menuCard';
+        card.innerHTML = `
+          <div class="menuImg" style="background-image:url('${item.img}')"></div>
+          <div class="menuBody">
+            <div class="menuTop">
+              <div>
+                <div class="menuName">${item.name}</div>
+                <div class="menuTag">${item.tag}</div>
+              </div>
+              <div class="price">${Math.round(item.price/1000)}K</div>
+            </div>
+            <div class="hint">Klik untuk tambah ke keranjang</div>
+          </div>
+        `;
+        card.addEventListener('click', ()=> addItem(item));
+        menuGrid.appendChild(card);
+      });
+    }
+
+    function addItem(item){
+      const k = keyFrom(item);
+      if(!cart[k]) cart[k] = {name:item.name, price:item.price, qty:0, cat:item.cat};
+      cart[k].qty += 1;
+      renderCart();
+    }
+    function changeQty(k, delta){
+      if(!cart[k]) return;
+      cart[k].qty += delta;
+      if(cart[k].qty <= 0) delete cart[k];
+      renderCart();
+    }
+    function clearCart(){
+      Object.keys(cart).forEach(k => delete cart[k]);
+      renderCart();
+    }
+
+    function calcSubTotal(){
+      return Object.values(cart).reduce((sum, it)=> sum + (it.price * it.qty), 0);
+    }
+    function calcB1G1Discount(){
+      const drinks = [];
+      Object.values(cart).forEach(it=>{
+        if(it.cat === 'drink'){
+          for(let x=0; x<it.qty; x++) drinks.push(it.price);
+        }
+      });
+      if(drinks.length < 2) return 0;
+      drinks.sort((a,b)=>a-b);
+      return drinks[0]; // cheapest drink free
+    }
+    function calcDiscount(subtotal){
+      let discount = 0;
+      if(promoStudent.checked) discount += Math.round(subtotal * 0.20);
+      if(promoB1G1.checked) discount += calcB1G1Discount();
+      return Math.min(discount, subtotal);
+    }
+
+    function renderCart(){
+      const items = Object.entries(cart);
+
+      if(items.length === 0){
+        cartEmpty.style.display = 'block';
+        cartList.style.display = 'none';
+        cartList.innerHTML = '';
+        btnOrder.disabled = true;
+        btnClear.disabled = true;
+        subTotalEl.textContent = rupiah(0);
+        discountEl.textContent = rupiah(0);
+        grandTotalEl.textContent = rupiah(0);
+        return;
+      }
+
+      cartEmpty.style.display = 'none';
+      cartList.style.display = 'grid';
+      cartList.innerHTML = '';
+
+      items.forEach(([k, it])=>{
+        const row = document.createElement('div');
+        row.className = 'cartRow';
+        row.innerHTML = `
+          <div>
+            <b style="font-size:14px;">${it.name}</b>
+            <div class="muted" style="font-size:12px;">${it.cat === 'drink' ? 'Minuman' : 'Makanan'} • ${rupiah(it.price)}</div>
+          </div>
+          <div class="qty">
+            <button class="qbtn">−</button>
+            <div class="qnum">${it.qty}</div>
+            <button class="qbtn">+</button>
+          </div>
+          <div class="subtotal">${rupiah(it.price * it.qty)}</div>
+        `;
+
+        const minus = row.querySelectorAll('.qbtn')[0];
+        const plus  = row.querySelectorAll('.qbtn')[1];
+        minus.addEventListener('click', ()=> changeQty(k, -1));
+        plus.addEventListener('click', ()=> changeQty(k, +1));
+        cartList.appendChild(row);
+      });
+
+      const subtotal = calcSubTotal();
+      const discount = calcDiscount(subtotal);
+      const grand = subtotal - discount;
+
+      subTotalEl.textContent = rupiah(subtotal);
+      discountEl.textContent = rupiah(discount);
+      grandTotalEl.textContent = rupiah(grand);
+
+      btnOrder.disabled = false;
+      btnClear.disabled = false;
+    }
+
+    [promoStudent, promoB1G1].forEach(x=> x.addEventListener('change', renderCart));
+    btnClear.addEventListener('click', clearCart);
+
+    btnOrder.addEventListener('click', ()=>{
+      const items = Object.values(cart);
+      if(items.length === 0) return;
+
+      const subtotal = calcSubTotal();
+      const discount = calcDiscount(subtotal);
+      const grand = subtotal - discount;
+
+      const orderType = (document.querySelector('input[name="otype"]:checked')?.value) || "Dine-in";
+      const name = (custName.value || "").trim();
+      const note = (custNote.value || "").trim();
+      const d = (pickupDate.value || "").trim();
+      const t = (pickupTime.value || "").trim();
+
+      let text = "Halo Sawah Senja Coffee,%0A%0ASaya ingin membuat pesanan:%0A";
+      items.forEach(it=>{
+        const line = `- ${it.name} x${it.qty} (${rupiah(it.price * it.qty)})`;
+        text += encodeURIComponent(line) + "%0A";
+      });
+
+      text += "%0A" + encodeURIComponent("Tipe: " + orderType) + "%0A";
+      if(d || t){
+        const when = (d ? d : "") + (t ? (" " + t) : "");
+        text += encodeURIComponent("Pickup: " + when) + "%0A";
+      }
+
+      if(promoStudent.checked) text += encodeURIComponent("Promo: Student Day 20%") + "%0A";
+      if(promoB1G1.checked) text += encodeURIComponent("Promo: Tanggal Cantik B1G1 (Minuman)") + "%0A";
+
+      text += "%0A" + encodeURIComponent("Subtotal: " + rupiah(subtotal)) + "%0A";
+      text += encodeURIComponent("Diskon: " + rupiah(discount)) + "%0A";
+      text += encodeURIComponent("Total: " + rupiah(grand)) + "%0A";
+
+      if(name) text += encodeURIComponent("Nama: " + name) + "%0A";
+      if(note) text += encodeURIComponent("Catatan: " + note) + "%0A";
+
+      const url = "https://wa.me/" + WA_NUMBER + "?text=" + text;
+      window.open(url, "_blank");
+    });
+
+    renderMenu();
+    renderCart();
+  </script>
+</body>
+</html>
